@@ -1,0 +1,17 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - "main"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 24
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm exec turbo test

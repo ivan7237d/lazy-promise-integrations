@@ -1,0 +1,28 @@
+name: Test and maybe publish
+permissions:
+  contents: write
+  id-token: write
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+      - run: pnpm install
+      - name: Build and test
+        run: pnpm exec turbo test
+      - name: Publish packages
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          pnpm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}"
+          pnpm --recursive --parallel exec bash ../../scripts/publish.sh
+          git push --tags
