@@ -1,6 +1,6 @@
 # Experimental glue for LazyPromise and Solid 2.0
 
-[What's LazyPromise?](https://github.com/lazy-promise/lazy-promise).
+[What's LazyPromise?](https://github.com/lazy-promise/lazy-promise)
 
 ## Installation
 

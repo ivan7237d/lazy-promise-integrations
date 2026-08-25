@@ -2,7 +2,7 @@
   "name": "lazy-promise-solid-js",
   "version": "0.0.0",
   "description": "Glue for LazyPromise and SolidJS",
-  "repository": "https://github.com/ivan7237/lazy-promise-integrations.git",
+  "repository": "https://github.com/ivan7237d/lazy-promise-integrations.git",
   "license": "MIT",
   "sideEffects": false,
   "exports": {
