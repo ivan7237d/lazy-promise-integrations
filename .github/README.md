@@ -15,15 +15,14 @@ The package does not depend on `@lazy-promise/core`; it only needs the tiny `@la
 Whenever Solid API expects an async iterable, you can pass `yourLazyPromise.pipe(glue)`, for example
 
 ```
-const [count, setCount] = createSignal(0);
-const debouncedCount = createMemo(() =>
-  // Track `count` and wrap it in a LazyPromise
-  box(count())
-    // Delay that LazyPromise by a second
-    .finally(() => inTimeout(1000))
-    // Add glue
-    .pipe(glue),
-);
+const debounced = createMemo(() => {
+  const value = str();
+  return fromGen(function* () {
+    // Delays a lazy promise by 0.5s.
+    yield* inTimeout(500);
+    return value;
+  }).pipe(glue);
+});
 ```
 
 With `createEffect`/`createRenderEffect`, the effect logic can live entirely in the LazyPromise, and you can pass `noop` (simply `() => {}`) as the required second argument: `createEffect(() => yourLazyPromise.pipe(glue), noop)`. For example,
