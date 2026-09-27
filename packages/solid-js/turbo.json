@@ -21,10 +21,10 @@
       "outputs": ["build/module/**", "build/types/**"]
     },
     "test": {
-      "dependsOn": ["test:eslint", "test:vitest", "build"]
+      "dependsOn": ["test:eslint", "test:typescript", "test:vitest", "build"]
     },
-    "test:eslint": { "dependsOn": ["^build"] },
-    "test:typescript": { "dependsOn": ["^build"] },
-    "test:vitest": { "dependsOn": ["^build"] }
+    "test:eslint": { "dependsOn": ["build", "^build"] },
+    "test:typescript": { "dependsOn": ["build", "^build"] },
+    "test:vitest": { "dependsOn": ["build", "^build"] }
   }
 }
