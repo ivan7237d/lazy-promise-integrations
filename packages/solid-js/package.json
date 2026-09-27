@@ -1,6 +1,6 @@
 {
   "name": "lazy-promise-solid-js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Glue for LazyPromise and SolidJS",
   "repository": "https://github.com/ivan7237d/lazy-promise-integrations.git",
   "license": "MIT",
@@ -31,12 +31,15 @@
     "test:typescript": "tsc --noEmit",
     "test:vitest": "vitest run --passWithNoTests"
   },
+  "dependencies": {
+    "@lazy-promise/interop": "0.0.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
-    "@lazy-promise/core": "*",
+    "@lazy-promise/core": "^0.0.44",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@vitest/coverage-v8": "^4.0.16",
@@ -46,7 +49,6 @@
     "vitest": "^4.0.16"
   },
   "peerDependencies": {
-    "@lazy-promise/core": "*",
     "solid-js": "^2.0.0-rc.1"
   }
 }

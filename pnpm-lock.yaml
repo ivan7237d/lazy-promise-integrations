@@ -49,6 +49,10 @@ importers:
         version: 3.9.1(eslint@8.57.1)(typescript@5.9.3)
 
   packages/solid-js:
+    dependencies:
+      '@lazy-promise/interop':
+        specifier: 0.0.0
+        version: 0.0.0
     devDependencies:
       '@babel/cli':
         specifier: ^7.19.3
@@ -63,8 +67,8 @@ importers:
         specifier: ^7.24.7
         version: 7.29.7(@babel/core@7.29.7)
       '@lazy-promise/core':
-        specifier: '*'
-        version: 0.0.36
+        specifier: ^0.0.44
+        version: 0.0.44
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
@@ -1325,9 +1329,15 @@ packages:
       '@jridgewell/sourcemap-codec': 1.5.5
     dev: true
 
-  /@lazy-promise/core@0.0.36:
-    resolution: {integrity: sha512-k7Yx3/WxbbVJTgPYcxfyFTt4IPGmKfj07Gghig6+fMeb9WoG9QIAoZBFAYiyun0wk2jadNOab2nHTIdlAWtyVg==}
+  /@lazy-promise/core@0.0.44:
+    resolution: {integrity: sha512-M/Yr0XPxu7brspEdnw81ZbhVQGczNmFNf+VyVwz44AgTxj+ZjBJfJVCBxUlVx0AzctnF+aYb5SJk243/o6pEog==}
+    engines: {node: ^20.16.0 || >=22.3.0}
+    dependencies:
+      '@lazy-promise/interop': 0.0.0
     dev: true
+
+  /@lazy-promise/interop@0.0.0:
+    resolution: {integrity: sha512-rcSDzsF4Aob1GZXB/90PtS+//vKo645yYW2IO8wCOTh7t55Tpee5RiOkoZLu5Ramzko86B2cVTTVA+VMBebMYg==}
 
   /@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3:
     resolution: {integrity: sha512-s88O1aVtXftvp5bCPB7WnmXc5IwOZZ7YPuwNPt+GtOOXpPvad1LfbmjYv+qII7zP6RU2QGnqve27dnLycEnyEQ==}

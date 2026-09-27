@@ -13,7 +13,12 @@ const signalsDir = dirname(
 export default defineConfig({
   resolve: {
     alias: {
-      "lazy-promise-solid-js": __dirname,
+      // Pointing at the package directory would pick the CJS build, whose
+      // `require("solid-js")` bypasses the alias below.
+      "lazy-promise-solid-js": join(
+        import.meta.dirname,
+        "build/module/index.js",
+      ),
       // Vitest runs in Node, where the "node" condition resolves solid-js to
       // its server build. Force the matched pair of client dev builds instead.
       "solid-js": join(solidDir, "dist/dev.js"),

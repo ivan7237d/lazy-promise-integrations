@@ -5,8 +5,10 @@
 ## Installation
 
 ```bash
-npm install @lazy-promise/core lazy-promise-solid-js
+npm install lazy-promise-solid-js
 ```
+
+The package does not depend on `@lazy-promise/core`; it only needs the tiny `@lazy-promise/interop`.
 
 ## `glue` and `noop`
 
@@ -48,7 +50,7 @@ createEffect(() => {
 
 In both cases there is a clear distinction on what is and isn't tracked: you _build_ a LazyPromise in a tracked context, and it gets _subscribed_ in untracked (and ownerless) context. The LazyPromise is unsubscribed when Solid closes the async iterable (when the computation re-runs or is disposed), and rejections are handled by Solid the same way as rejections of a native promise returned from a computation.
 
-`glue` will give you a typechecking error if you fail to catch any [boxed errors](https://github.com/lazy-promise/lazy-promise#typed-errors).
+`glue` will give you a typechecking error if you fail to catch any [boxed errors](https://github.com/lazy-promise/lazy-promise#typed-errors) or if the LazyPromise has dependencies other than `OwnerDep`.
 
 ## OwnerDep
 
@@ -65,16 +67,6 @@ That means that anywhere in your async logic you can get hold of the owner witho
 ```
 const yourLazyPromise = fromGen(function* (dep: OwnerDep) {
   const result = runWithOwner(dep[ownerSymbol], () => {
-    // Call `useContext`.
-  });
-});
-```
-
-There is a `runWithOwnerDep` utility that makes this a little more concise:
-
-```
-const yourLazyPromise = fromGen(function* () {
-  const result = yield* runWithOwnerDep(() => {
     // Call `useContext`.
   });
 });

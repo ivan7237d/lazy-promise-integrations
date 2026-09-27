@@ -7,7 +7,7 @@ import {
   rejecting,
 } from "@lazy-promise/core";
 import type { OwnerDep } from "lazy-promise-solid-js";
-import { glue, noop, runWithOwnerDep } from "lazy-promise-solid-js";
+import { glue, noop, ownerSymbol } from "lazy-promise-solid-js";
 import {
   createEffect,
   createMemo,
@@ -17,6 +17,7 @@ import {
   flush,
   getOwner,
   onCleanup,
+  runWithOwner,
 } from "solid-js";
 import { afterEach, beforeEach, expect, expectTypeOf, test, vi } from "vitest";
 
@@ -97,22 +98,6 @@ test("types", () => {
 
   /** @ts-expect-error */
   glue(neverDep);
-
-  expectTypeOf(runWithOwnerDep(() => 42)).toEqualTypeOf<
-    LazyPromise<number, OwnerDep>
-  >();
-  expectTypeOf(runWithOwnerDep(() => box("x"))).toEqualTypeOf<
-    LazyPromise<"x", OwnerDep>
-  >();
-  expectTypeOf(
-    runWithOwnerDep(
-      (): LazyPromise<string, OwnerDep & { api: number }> =>
-        new LazyPromise(() => {}),
-    ),
-  ).toEqualTypeOf<LazyPromise<string, OwnerDep & { api: number }>>();
-  expectTypeOf(glue(runWithOwnerDep(() => 42))).toEqualTypeOf<
-    AsyncIterable<number>
-  >();
 
   expectTypeOf(noop).toEqualTypeOf<() => void>();
 });
@@ -367,14 +352,14 @@ test("effect: asynchronous rejection reaches the error arm of an effect bundle",
   dispose();
 });
 
-test("effect: onCleanup registered through runWithOwnerDep is disposed on re-run", async () => {
+test("effect: onCleanup registered through OwnerDep is disposed on re-run", async () => {
   const [state, dispose] = createRoot((dispose) => {
     const [a, setA] = createSignal(0);
     createEffect(() => {
       const value = a();
-      return fromGen(function* () {
+      return fromGen(function* (dep: OwnerDep) {
         log("start", value);
-        yield* runWithOwnerDep(() => {
+        runWithOwner(dep[ownerSymbol], () => {
           onCleanup(() => {
             log("cleanup", value);
           });
@@ -459,16 +444,15 @@ test("renderEffect: works with noop", () => {
   dispose();
 });
 
-test("runWithOwnerDep: provides the owner and unboxes a returned LazyPromise", () => {
+test("OwnerDep: provides the owner", () => {
   const dispose = createRoot((dispose) => {
     createEffect(
       () =>
-        fromGen(function* () {
-          const value = yield* runWithOwnerDep(() => {
+        fromGen(function* (dep: OwnerDep) {
+          return runWithOwner(dep[ownerSymbol], () => {
             log("owner", getOwner() !== null);
-            return box("value");
+            return "value";
           });
-          return value;
         }).pipe(glue),
       (value) => {
         log("effect", value);
